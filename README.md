@@ -1,2 +1,1 @@
-# todolist-vue
-Todo app built in Vue.js
+# Todo app built in Vue.js
