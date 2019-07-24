@@ -65,6 +65,7 @@ li {
 }
 .done {
 	text-decoration: line-through;
+	color: #1B998B;
 }
 .remove {
 	background-color: transparent;
