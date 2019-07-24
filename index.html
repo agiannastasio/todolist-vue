@@ -3,28 +3,30 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Vue.js Todo List app</title>
+	<link rel="stylesheet" href="styles.css">
+	<link href="https://fonts.googleapis.com/css?family=Muli&display=swap" rel="stylesheet">
 </head>
 <body>
 	<main id="app">
-		<h1>{{title}}</h1>
-		<h2>{{desc}}</h2>
-		<form @submit.prevent="addTodo">
-			<input v-model="newTodo" type="text" placeholder="New task">
-			<button type="submit">Add</button>
-		</form>
+		<header>
+			<h1>{{title}}</h1>
+			<h2>{{desc}}</h2>
+			<form @submit.prevent="addTodo">
+				<input v-model="newTodo" type="text" placeholder="New task" required autofocus>
+				<button type="submit">Add</button>
+			</form>
+		</header>
 		<ul>
 			<li v-for="todo in todos">
-				<input type="checkbox" v-model="todo.done">
-				<span :class="{done: todo.done}">{{todo.title}}</span>
-				<button @click="removeTodo(todo)">remove</button>
+				<span class="checkbox">
+			    <input type="checkbox" id="checkbox" v-model="todo.done">
+			    <label for="checkbox"></label>
+				</span>
+				<span class="title" :class="{done: todo.done}">{{todo.title}}</span>
+				<button class="remove" @click="removeTodo(todo)"><img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU5IDU5IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA1OSA1OTsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxnPgoJPHBhdGggZD0iTTI5LjUsNTFjMC41NTIsMCwxLTAuNDQ3LDEtMVYxN2MwLTAuNTUzLTAuNDQ4LTEtMS0xcy0xLDAuNDQ3LTEsMXYzM0MyOC41LDUwLjU1MywyOC45NDgsNTEsMjkuNSw1MXoiIGZpbGw9IiMwMDAwMDAiLz4KCTxwYXRoIGQ9Ik0xOS41LDUxYzAuNTUyLDAsMS0wLjQ0NywxLTFWMTdjMC0wLjU1My0wLjQ0OC0xLTEtMXMtMSwwLjQ0Ny0xLDF2MzNDMTguNSw1MC41NTMsMTguOTQ4LDUxLDE5LjUsNTF6IiBmaWxsPSIjMDAwMDAwIi8+Cgk8cGF0aCBkPSJNMzkuNSw1MWMwLjU1MiwwLDEtMC40NDcsMS0xVjE3YzAtMC41NTMtMC40NDgtMS0xLTFzLTEsMC40NDctMSwxdjMzQzM4LjUsNTAuNTUzLDM4Ljk0OCw1MSwzOS41LDUxeiIgZmlsbD0iIzAwMDAwMCIvPgoJPHBhdGggZD0iTTUyLjUsNkgzOC40NTZjLTAuMTEtMS4yNS0wLjQ5NS0zLjM1OC0xLjgxMy00LjcxMUMzNS44MDksMC40MzQsMzQuNzUxLDAsMzMuNDk5LDBIMjMuNWMtMS4yNTIsMC0yLjMxLDAuNDM0LTMuMTQ0LDEuMjg5ICAgQzE5LjAzOCwyLjY0MiwxOC42NTMsNC43NSwxOC41NDMsNkg2LjVjLTAuNTUyLDAtMSwwLjQ0Ny0xLDFzMC40NDgsMSwxLDFoMi4wNDFsMS45MTUsNDYuMDIxQzEwLjQ5Myw1NS43NDMsMTEuNTY1LDU5LDE1LjM2NCw1OSAgIGgyOC4yNzJjMy43OTksMCw0Ljg3MS0zLjI1Nyw0LjkwNy00Ljk1OEw1MC40NTksOEg1Mi41YzAuNTUyLDAsMS0wLjQ0NywxLTFTNTMuMDUyLDYsNTIuNSw2eiBNMjEuNzkyLDIuNjgxICAgQzIyLjI0LDIuMjIzLDIyLjc5OSwyLDIzLjUsMmg5Ljk5OWMwLjcwMSwwLDEuMjYsMC4yMjMsMS43MDgsMC42ODFjMC44MDUsMC44MjMsMS4xMjgsMi4yNzEsMS4yNCwzLjMxOUgyMC41NTMgICBDMjAuNjY1LDQuOTUyLDIwLjk4OCwzLjUwNCwyMS43OTIsMi42ODF6IE00Ni41NDQsNTMuOTc5QzQ2LjUzOCw1NC4yODgsNDYuNCw1Nyw0My42MzYsNTdIMTUuMzY0ICAgYy0yLjczNCwwLTIuODk4LTIuNzE3LTIuOTA5LTMuMDQyTDEwLjU0Miw4aDM3LjkxNUw0Ni41NDQsNTMuOTc5eiIgZmlsbD0iIzAwMDAwMCIvPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" /></button>
 			</li>
 		</ul>
 	</main>
-	<style>
-		.done {
-			text-decoration: line-through;
-		}
-	</style>
 	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 	<script src="./app.js"></script>
 </body>
